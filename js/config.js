@@ -1,0 +1,2 @@
+window.GIBDD_CONFIG={SUPABASE_URL:'https://uzykxlznikjuakrwskrz.supabase.co',SUPABASE_KEY:'sb_publishable_-OhOsi7WG9HA2S8WP02Qnw_gF9t_kO2'};
+window.sb=window.supabase.createClient(window.GIBDD_CONFIG.SUPABASE_URL,window.GIBDD_CONFIG.SUPABASE_KEY);
