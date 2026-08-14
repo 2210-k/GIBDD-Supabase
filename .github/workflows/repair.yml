@@ -1,0 +1,32 @@
+name: Repair GIBDD runtime
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch runtime
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('js/app.js')
+          s=p.read_text()
+          old='icon.className=type==="error"?"fa-solid fa-circle-xmark":type==="info"?"fa-solid fa-circle-info":"fa-solid fa-circle-check"'
+          new='icon.setAttribute("class",type==="error"?"fa-solid fa-circle-xmark":type==="info"?"fa-solid fa-circle-info":"fa-solid fa-circle-check")'
+          if old in s:
+              p.write_text(s.replace(old,new,1))
+          elif 'icon.className=' in s:
+              import re
+              s=re.sub(r'icon\\.className=type===\"error\"\?\"fa-solid fa-circle-xmark\":type===\"info\"\?\"fa-solid fa-circle-info\":\"fa-solid fa-circle-check\"',new,s,count=1)
+              p.write_text(s)
+          PY
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add js/app.js
+          git diff --cached --quiet || git commit -m 'Fix toast icon SVG class handling'
+          git push
