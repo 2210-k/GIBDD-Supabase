@@ -12,7 +12,7 @@ const actionClass=t=>({fine:"badge-red",warning:"badge-gold",arrest:"badge-purpl
 const reasonClass=r=>({"0.1":"badge-blue","0.2":"badge-gold","0.3":"badge-red"}[r]||"badge-blue");
 const resolutionText=(r,n)=>r==="not_issued"?"Постановление не выдано":r==="issued"?`Постановление № ${n||"—"}`:"";
 let toastTimer;
-function showToast(message,type="success"){const t=$("#toastMessage"),box=$("#toast"),icon=$("#toastIcon");if(!t)return;t.textContent=message;box.className=`toast show ${type}`;icon.className=type==="error"?"fa-solid fa-circle-xmark":type==="info"?"fa-solid fa-circle-info":"fa-solid fa-circle-check";clearTimeout(toastTimer);toastTimer=setTimeout(()=>box.classList.remove("show"),3200)}
+function showToast(message,type="success"){const t=$("#toastMessage"),box=$("#toast"),icon=$("#toastIcon");if(!t)return;t.textContent=message;box.className=`toast show ${type}`;icon.setAttribute("class",type==="error"?"fa-solid fa-circle-xmark":type==="info"?"fa-solid fa-circle-info":"fa-solid fa-circle-check");clearTimeout(toastTimer);toastTimer=setTimeout(()=>box.classList.remove("show"),3200)}
 function openModal(id){const m=$("#"+id);if(!m)return;m.classList.add("active");document.body.style.overflow="hidden"}
 function closeModal(id){const m=$("#"+id);if(!m)return;m.classList.remove("active");if(!document.querySelector(".modal-overlay.active"))document.body.style.overflow=""}
 function normalizeAction(a={}){return{id:a.id||uid("act"),type:a.type||"fine",article:a.article||"",resolution:a.resolution||"",resolutionNumber:a.resolutionNumber||"",note:a.note||"",date:a.date||today(),createdAt:a.createdAt||new Date().toISOString()}}
